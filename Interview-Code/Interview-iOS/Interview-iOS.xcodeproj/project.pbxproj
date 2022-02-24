@@ -8,21 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		A70D10B327C5CCFB0077DB94 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10B227C5CCFB0077DB94 /* AppDelegate.m */; };
-		A70D10B627C5CCFB0077DB94 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10B527C5CCFB0077DB94 /* SceneDelegate.m */; };
 		A70D10B927C5CCFB0077DB94 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10B827C5CCFB0077DB94 /* ViewController.m */; };
 		A70D10BC27C5CCFB0077DB94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70D10BA27C5CCFB0077DB94 /* Main.storyboard */; };
 		A70D10BE27C5CCFD0077DB94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A70D10BD27C5CCFD0077DB94 /* Assets.xcassets */; };
 		A70D10C127C5CCFD0077DB94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70D10BF27C5CCFD0077DB94 /* LaunchScreen.storyboard */; };
 		A70D10C427C5CCFD0077DB94 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10C327C5CCFD0077DB94 /* main.m */; };
 		A70D10D027C6163A0077DB94 /* AutoReleasePoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */; };
+		A70D10D527C768A20077DB94 /* OCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10D427C768A20077DB94 /* OCViewController.m */; };
+		A70D10D827C768E40077DB94 /* OCStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10D727C768E40077DB94 /* OCStudent.m */; };
+		A70D10DC27C780580077DB94 /* NSObject+MetaRootClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */; };
+		A70D10E027C782930077DB94 /* OCPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10DF27C782920077DB94 /* OCPerson.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A70D10AE27C5CCFB0077DB94 /* Interview-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Interview-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A70D10B127C5CCFB0077DB94 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A70D10B227C5CCFB0077DB94 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A70D10B427C5CCFB0077DB94 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		A70D10B527C5CCFB0077DB94 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
 		A70D10B727C5CCFB0077DB94 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		A70D10B827C5CCFB0077DB94 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A70D10BB27C5CCFB0077DB94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -35,6 +36,15 @@
 		A70D10CE27C6163A0077DB94 /* AutoReleasePoolViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoReleasePoolViewController.h; sourceTree = "<group>"; };
 		A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoReleasePoolViewController.m; sourceTree = "<group>"; };
 		A70D10D127C618890077DB94 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		A70D10D327C768A20077DB94 /* OCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCViewController.h; sourceTree = "<group>"; };
+		A70D10D427C768A20077DB94 /* OCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCViewController.m; sourceTree = "<group>"; };
+		A70D10D627C768E40077DB94 /* OCStudent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCStudent.h; sourceTree = "<group>"; };
+		A70D10D727C768E40077DB94 /* OCStudent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCStudent.m; sourceTree = "<group>"; };
+		A70D10D927C76B520077DB94 /* OCViewController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OCViewController.cpp; sourceTree = "<group>"; };
+		A70D10DA27C780580077DB94 /* NSObject+MetaRootClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+MetaRootClass.h"; sourceTree = "<group>"; };
+		A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MetaRootClass.m"; sourceTree = "<group>"; };
+		A70D10DE27C782920077DB94 /* OCPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCPerson.h; sourceTree = "<group>"; };
+		A70D10DF27C782920077DB94 /* OCPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCPerson.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +79,6 @@
 			children = (
 				A70D10B127C5CCFB0077DB94 /* AppDelegate.h */,
 				A70D10B227C5CCFB0077DB94 /* AppDelegate.m */,
-				A70D10B427C5CCFB0077DB94 /* SceneDelegate.h */,
-				A70D10B527C5CCFB0077DB94 /* SceneDelegate.m */,
 				A70D10B727C5CCFB0077DB94 /* ViewController.h */,
 				A70D10B827C5CCFB0077DB94 /* ViewController.m */,
 				A70D10D127C618890077DB94 /* PrefixHeader.pch */,
@@ -79,6 +87,7 @@
 				A70D10BF27C5CCFD0077DB94 /* LaunchScreen.storyboard */,
 				A70D10C227C5CCFD0077DB94 /* Info.plist */,
 				A70D10C327C5CCFD0077DB94 /* main.m */,
+				A70D10D227C754720077DB94 /* OC对象的本质 */,
 				A70D10CA27C5CE5E0077DB94 /* @autoreleasepool */,
 			);
 			path = "Interview-iOS";
@@ -93,6 +102,30 @@
 				A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */,
 			);
 			path = "@autoreleasepool";
+			sourceTree = "<group>";
+		};
+		A70D10D227C754720077DB94 /* OC对象的本质 */ = {
+			isa = PBXGroup;
+			children = (
+				A70D10D327C768A20077DB94 /* OCViewController.h */,
+				A70D10D427C768A20077DB94 /* OCViewController.m */,
+				A70D10D927C76B520077DB94 /* OCViewController.cpp */,
+				A70D10DE27C782920077DB94 /* OCPerson.h */,
+				A70D10DF27C782920077DB94 /* OCPerson.m */,
+				A70D10D627C768E40077DB94 /* OCStudent.h */,
+				A70D10D727C768E40077DB94 /* OCStudent.m */,
+				A70D10DD27C780630077DB94 /* metaRootClass的isa指向rootClass */,
+			);
+			path = "OC对象的本质";
+			sourceTree = "<group>";
+		};
+		A70D10DD27C780630077DB94 /* metaRootClass的isa指向rootClass */ = {
+			isa = PBXGroup;
+			children = (
+				A70D10DA27C780580077DB94 /* NSObject+MetaRootClass.h */,
+				A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */,
+			);
+			path = "metaRootClass的isa指向rootClass";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,10 +199,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A70D10B927C5CCFB0077DB94 /* ViewController.m in Sources */,
+				A70D10D827C768E40077DB94 /* OCStudent.m in Sources */,
+				A70D10D527C768A20077DB94 /* OCViewController.m in Sources */,
 				A70D10D027C6163A0077DB94 /* AutoReleasePoolViewController.m in Sources */,
+				A70D10DC27C780580077DB94 /* NSObject+MetaRootClass.m in Sources */,
 				A70D10B327C5CCFB0077DB94 /* AppDelegate.m in Sources */,
+				A70D10E027C782930077DB94 /* OCPerson.m in Sources */,
 				A70D10C427C5CCFD0077DB94 /* main.m in Sources */,
-				A70D10B627C5CCFB0077DB94 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,8 +356,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -347,8 +385,10 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
