@@ -14,6 +14,7 @@
 		A70D10BE27C5CCFD0077DB94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A70D10BD27C5CCFD0077DB94 /* Assets.xcassets */; };
 		A70D10C127C5CCFD0077DB94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70D10BF27C5CCFD0077DB94 /* LaunchScreen.storyboard */; };
 		A70D10C427C5CCFD0077DB94 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10C327C5CCFD0077DB94 /* main.m */; };
+		A70D10D027C6163A0077DB94 /* AutoReleasePoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,9 @@
 		A70D10C327C5CCFD0077DB94 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A70D10CB27C5D78E0077DB94 /* HFAutoReleasePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HFAutoReleasePool.h; sourceTree = "<group>"; };
 		A70D10CC27C5D78E0077DB94 /* HFAutoReleasePool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HFAutoReleasePool.m; sourceTree = "<group>"; };
+		A70D10CE27C6163A0077DB94 /* AutoReleasePoolViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoReleasePoolViewController.h; sourceTree = "<group>"; };
+		A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoReleasePoolViewController.m; sourceTree = "<group>"; };
+		A70D10D127C618890077DB94 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 				A70D10B527C5CCFB0077DB94 /* SceneDelegate.m */,
 				A70D10B727C5CCFB0077DB94 /* ViewController.h */,
 				A70D10B827C5CCFB0077DB94 /* ViewController.m */,
+				A70D10D127C618890077DB94 /* PrefixHeader.pch */,
 				A70D10BA27C5CCFB0077DB94 /* Main.storyboard */,
 				A70D10BD27C5CCFD0077DB94 /* Assets.xcassets */,
 				A70D10BF27C5CCFD0077DB94 /* LaunchScreen.storyboard */,
@@ -84,6 +89,8 @@
 			children = (
 				A70D10CB27C5D78E0077DB94 /* HFAutoReleasePool.h */,
 				A70D10CC27C5D78E0077DB94 /* HFAutoReleasePool.m */,
+				A70D10CE27C6163A0077DB94 /* AutoReleasePoolViewController.h */,
+				A70D10CF27C6163A0077DB94 /* AutoReleasePoolViewController.m */,
 			);
 			path = "@autoreleasepool";
 			sourceTree = "<group>";
@@ -159,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A70D10B927C5CCFB0077DB94 /* ViewController.m in Sources */,
+				A70D10D027C6163A0077DB94 /* AutoReleasePoolViewController.m in Sources */,
 				A70D10B327C5CCFB0077DB94 /* AppDelegate.m in Sources */,
 				A70D10C427C5CCFD0077DB94 /* main.m in Sources */,
 				A70D10B627C5CCFB0077DB94 /* SceneDelegate.m in Sources */,
@@ -306,6 +314,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Interview-iOS/PrefixHeader.pch";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Interview-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -321,7 +330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.foy.Interview-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -332,6 +341,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Interview-iOS/PrefixHeader.pch";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Interview-iOS/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -347,7 +357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.foy.Interview-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
