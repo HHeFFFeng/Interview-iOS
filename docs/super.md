@@ -65,6 +65,6 @@ static void _I_HFStudent_run(HFStudent * self, SEL _cmd) {
 }
 ```
 `[super message]`的底层实现：</br>
-1. objc_msgSendSuper2(self, 当前类)，通过当前类找到他父类
+1. objc_msgSendSuper(self, 方法名)，通过当前类找到他父类
 2. 消息接收者依然是当前子类对象
 3. 消息发送时从父类开始查找
