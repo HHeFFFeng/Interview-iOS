@@ -18,6 +18,10 @@
 		A70D10D827C768E40077DB94 /* OCStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10D727C768E40077DB94 /* OCStudent.m */; };
 		A70D10DC27C780580077DB94 /* NSObject+MetaRootClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */; };
 		A70D10E027C782930077DB94 /* OCPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10DF27C782920077DB94 /* OCPerson.m */; };
+		A70D10E527C8A3DB0077DB94 /* KVOViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10E427C8A3DB0077DB94 /* KVOViewController.m */; };
+		A70D10E827C8A5240077DB94 /* KVOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10E727C8A5240077DB94 /* KVOPerson.m */; };
+		A70D10F027C8DBD80077DB94 /* KVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10EF27C8DBD80077DB94 /* KVCViewController.m */; };
+		A70D10F327C8DC600077DB94 /* KVCPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10F227C8DC600077DB94 /* KVCPerson.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +49,16 @@
 		A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MetaRootClass.m"; sourceTree = "<group>"; };
 		A70D10DE27C782920077DB94 /* OCPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCPerson.h; sourceTree = "<group>"; };
 		A70D10DF27C782920077DB94 /* OCPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCPerson.m; sourceTree = "<group>"; };
+		A70D10E327C8A3DB0077DB94 /* KVOViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVOViewController.h; sourceTree = "<group>"; };
+		A70D10E427C8A3DB0077DB94 /* KVOViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVOViewController.m; sourceTree = "<group>"; };
+		A70D10E627C8A5240077DB94 /* KVOPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVOPerson.h; sourceTree = "<group>"; };
+		A70D10E727C8A5240077DB94 /* KVOPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVOPerson.m; sourceTree = "<group>"; };
+		A70D10E927C8C1B10077DB94 /* NSKVONotifying_KVOPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKVONotifying_KVOPerson.h; sourceTree = "<group>"; };
+		A70D10EA27C8C1B10077DB94 /* NSKVONotifying_KVOPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKVONotifying_KVOPerson.m; sourceTree = "<group>"; };
+		A70D10EE27C8DBD80077DB94 /* KVCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVCViewController.h; sourceTree = "<group>"; };
+		A70D10EF27C8DBD80077DB94 /* KVCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVCViewController.m; sourceTree = "<group>"; };
+		A70D10F127C8DC600077DB94 /* KVCPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVCPerson.h; sourceTree = "<group>"; };
+		A70D10F227C8DC600077DB94 /* KVCPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVCPerson.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +101,9 @@
 				A70D10BF27C5CCFD0077DB94 /* LaunchScreen.storyboard */,
 				A70D10C227C5CCFD0077DB94 /* Info.plist */,
 				A70D10C327C5CCFD0077DB94 /* main.m */,
+				A70D10ED27C8DB710077DB94 /* KVC */,
+				A70D10E227C8A3C60077DB94 /* KVO */,
+				A70D10E127C8760B0077DB94 /* runtime */,
 				A70D10D227C754720077DB94 /* OC对象的本质 */,
 				A70D10CA27C5CE5E0077DB94 /* @autoreleasepool */,
 			);
@@ -126,6 +143,37 @@
 				A70D10DB27C780580077DB94 /* NSObject+MetaRootClass.m */,
 			);
 			path = "metaRootClass的isa指向rootClass";
+			sourceTree = "<group>";
+		};
+		A70D10E127C8760B0077DB94 /* runtime */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = runtime;
+			sourceTree = "<group>";
+		};
+		A70D10E227C8A3C60077DB94 /* KVO */ = {
+			isa = PBXGroup;
+			children = (
+				A70D10E327C8A3DB0077DB94 /* KVOViewController.h */,
+				A70D10E427C8A3DB0077DB94 /* KVOViewController.m */,
+				A70D10E627C8A5240077DB94 /* KVOPerson.h */,
+				A70D10E727C8A5240077DB94 /* KVOPerson.m */,
+				A70D10E927C8C1B10077DB94 /* NSKVONotifying_KVOPerson.h */,
+				A70D10EA27C8C1B10077DB94 /* NSKVONotifying_KVOPerson.m */,
+			);
+			path = KVO;
+			sourceTree = "<group>";
+		};
+		A70D10ED27C8DB710077DB94 /* KVC */ = {
+			isa = PBXGroup;
+			children = (
+				A70D10EE27C8DBD80077DB94 /* KVCViewController.h */,
+				A70D10EF27C8DBD80077DB94 /* KVCViewController.m */,
+				A70D10F127C8DC600077DB94 /* KVCPerson.h */,
+				A70D10F227C8DC600077DB94 /* KVCPerson.m */,
+			);
+			path = KVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,11 +247,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A70D10B927C5CCFB0077DB94 /* ViewController.m in Sources */,
+				A70D10E827C8A5240077DB94 /* KVOPerson.m in Sources */,
+				A70D10F027C8DBD80077DB94 /* KVCViewController.m in Sources */,
 				A70D10D827C768E40077DB94 /* OCStudent.m in Sources */,
+				A70D10E527C8A3DB0077DB94 /* KVOViewController.m in Sources */,
 				A70D10D527C768A20077DB94 /* OCViewController.m in Sources */,
 				A70D10D027C6163A0077DB94 /* AutoReleasePoolViewController.m in Sources */,
 				A70D10DC27C780580077DB94 /* NSObject+MetaRootClass.m in Sources */,
 				A70D10B327C5CCFB0077DB94 /* AppDelegate.m in Sources */,
+				A70D10F327C8DC600077DB94 /* KVCPerson.m in Sources */,
 				A70D10E027C782930077DB94 /* OCPerson.m in Sources */,
 				A70D10C427C5CCFD0077DB94 /* main.m in Sources */,
 			);
