@@ -17,14 +17,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // <arm64, isa是个 指针
-    // >arm64, isa是一个 共用体
     
     [self testUnion];
 }
 
 // MARK: - 共用体
 - (void)testUnion {
+    // <arm64, isa是个 指针
+    // >arm64, isa是一个 共用体
+     
     // 需求：以最小的消耗给Person设置高、富、帅属性
     // 共用体实现
     
