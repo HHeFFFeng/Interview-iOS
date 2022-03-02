@@ -1,8 +1,15 @@
 # Runtime
 
 ### 介绍
->OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行</br>>OC的动态性就是由Runtime库来支撑和实现的，Runtime是一套C语言的API，封装了很多动态性相关的函数</br>
->平时编写的OC代码，底层都是转换成了Runtime API进行调用</br>**具体应用:*** 利用关联对象（AssociatedObject）给分类添加属性* 遍历类的所有成员变量（修改textfield的占位文字颜色、字典转模型、自动归档解档）* 交换方法实现（交换系统的方法）* 利用消息转发机制解决方法找不到的异常问题
+>OC是一门动态性比较强的编程语言，允许很多操作推迟到程序运行时再进行</br>
+>OC的动态性就是由Runtime库来支撑和实现的，Runtime是一套C语言的API，封装了很多动态性相关的函数</br>
+>平时编写的OC代码，底层都是转换成了Runtime API进行调用</br>
+
+**具体应用:**
+* 利用关联对象（AssociatedObject）给分类添加属性
+* 遍历类的所有成员变量（修改textfield的占位文字颜色、字典转模型、自动归档解档）
+* 交换方法实现（交换系统的方法）
+* 利用消息转发机制解决方法找不到的异常问题
 
 
 ### 实例对象 的数据结构
@@ -32,7 +39,7 @@ union isa_t {
 ```
 
 ### 类对象 的数据结构
-![objc_class-w1000](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/WX20220302-170556@2x.png)
+![objc_class-w800](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/WX20220302-170556%402x.png)
 
 
 
@@ -110,7 +117,7 @@ typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...);
 ```
 
 ##### Type Encoding
-![-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16413706237683.jpg)
+![-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16413706237683.jpg)
 
 
 #### 方法缓存 cache
