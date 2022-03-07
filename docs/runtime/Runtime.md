@@ -107,27 +107,28 @@ struct method_t {
     IMP imp; // 函数地址
 }
 ```
-`SEL`: 方法/函数名，一般叫选择器，底层结构类似`char *`，可以通过`@selector()`和`sel_registerName()`获得，不同类中的相同名字的方法，所对应的方法选择器是相同的</br>
+`SEL`: </br>
+方法/函数名，一般叫选择器，底层结构类似`char *`，可以通过`@selector()`和`sel_registerName()`获得，不同类中的相同名字的方法，所对应的方法选择器是相同的</br>
 
-`types`: 比如声明一个`-(void)test;`方法，对应的types大概是`v16@0:8`,其中16表示所有参数占用的空间大小，后面的0，8表示参数起始位置。`@`和`:`是两个默认的参数`(id)self`和`(SEL)_cmd`</br>
+`types`: </br>
+比如声明一个`-(void)test;`方法，对应的types大概是`v16@0:8`,其中16表示所有参数占用的空间大小，后面的0，8表示参数起始位置。`@`和`:`是两个默认的参数`(id)self`和`(SEL)_cmd`，可通过`@encode(type-name)`验证
 
-`IMP`: 函数的地址，代表函数的具体实现</br>
-```c++
-typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...); 
-```
+`IMP`: </br>
+函数的地址，代表函数的具体实现</br>
+`typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...);`
 
 ##### Type Encoding
-![-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16413706237683.jpg)
+![type_encoding-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16413706237683.jpg)
 
 
-#### 方法缓存 cache
-##### 数据结构
+### 方法缓存 cache
+#### 数据结构
 在`objc_class`内部有个结构体`cache_t`，里面就缓存着曾用过的方法</br>
 ```c++
 // 看到这种结构就该联想到 散列表
 struct cache_t {
-    struct bucket_t *_buckets; // 散列表
-    mask_t _mask; // total = _mask + 1
+    struct bucket_t *_buckets; // 散列表, [...bucket_t、bucket_t、bucket_t...]
+    mask_t _mask; // _mask = _buckets.length - 1
     mask_t _occupied; // 已缓存的方法数量
 }
 
@@ -136,32 +137,34 @@ struct bucket_t {
     IMP _imp;
 }
 ```
-##### 存储的形式
-* 以 `散列表(哈希表)` 的方式存储
-##### 查找过程
-1. 判断receiver是否为nil，也就是objc_msgSend的第一个参数self，也就是要调用的那个方法所属对象
-2. 从缓存里寻找，找到了则分发，否则
-3. 利用objc-class.mm中_class_lookupMethodAndLoadCache3（为什么有个这么奇怪的方法。本文末尾会解释）方法去寻找selector
-    1. 如果支持GC，忽略掉非GC环境的方法（retain等）
-    2. 从本class的method list寻找selector，如果找到，填充到缓存中，并返回selector，否则
-    3. 寻找父类的method list，并依次往上寻找，直到找到selector，填充到缓存中，并返回selector，否则
-    4. 调用_class_resolveMethod，如果可以动态resolve为一个selector，不缓存，方法返回，否则
-    5. 转发这个selector，否则
-4. 报错，抛出异常
+#### 存储的形式
+`散列表(哈希表)` 的方式存储，以空间换时间
+#### 表格大概如下
+| 索引i  | bucket_t                                   |
+|-----|----------------------------------------|
+| 0   | NULL                                   |
+| 1   | NULL                                   |
+| 2   | bucket_t(_key = @selector(test), _imp) |
+| 3   | NULL                                   |
+| 4   | NULL                                   |
+| ... | ...                                    |
 
-### 听课笔记
-* 动态性，相比C语言，OC可以在编译后动态改变它本身的一些特性
-* 位域 `:`
-* 一个字节(`byte`) = 8位
-* 掩码 `MASK`
-* `<<` `|` `&` `~` 位运算
-* 变量大小按`字节byte`为单位分配
-* LLDB (Low Lever Debug)，是默认内置于XCode的动态调试工具
-* class 和 meta-class 最后三位永远是 0
-* `union isa_t`
-* 元类对象 是一种特殊的 类对象
-* `class_ro_t` 包含哪些信息
-* `class_rw_t` 包含哪些信息
-* type encoding
-* struct method_t { SEL name, const char *types, IMP imp }
-* objc_class 中的 cache
+#### 原理
+例如: `[objc test]`
+
+##### 散列表 取值过程：
+1. 调动方法`@selector(test)`
+2. 用传入的`SEL`和`_mask`按位与`&`得到索引`i`
+3. 根据索引`i`找到`bucket_t`，判断其中的`SEL`与传入的`SEL`是否相同
+    1. 是，返回该`SEL`对应的`_iml`
+    2. 否，检查索引`i-1`，继续比较`SEL`，以此类推，如果索引<0，则使索引=_mask-1，直到找到`_imp`
+
+
+##### 散列表 存值过程：
+1. 调用方法`@selector(test)`
+2. 初始时，为对象的`cache_t`分配一定的空间，`cache_t`下的`_mask`值为`散列表`的长度 - 1
+3. 用传入的`SEL`和`_mask`按位与`&`得到索引`i`
+4. 检查索引`i`对应的空间是否为`NULL`
+    1. 是，将这个`bucket_t(@selector(test), _imp`缓存在索引`i`对应的空间
+    2. 否，检查索引`i-1`对应的空间是否为`NULL`，以此类推，如果索引<0，则使索引=_mask-1，并检查对应的空间是否为`NULL`，直到找到索引空间为`NULL`的再缓存
+
