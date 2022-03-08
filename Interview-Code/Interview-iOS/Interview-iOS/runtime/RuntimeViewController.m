@@ -7,6 +7,7 @@
 
 #import "RuntimeViewController.h"
 #import "RTPerson.h"
+#import "RTAPI.h"
 
 @interface RuntimeViewController ()
 @property (nonatomic, strong) RTPerson *person;
@@ -18,7 +19,13 @@
     [super viewDidLoad];
     
     
-    [self testUnion];
+    [self testAPI];
+}
+
+- (void)testAPI {
+    RTAPI *api = [RTAPI new];
+//    [api testGetInstanceVariable];
+    [api testCopyIvarList];
 }
 
 // MARK: - 共用体

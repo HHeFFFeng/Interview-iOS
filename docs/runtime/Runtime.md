@@ -168,3 +168,25 @@ struct bucket_t {
     1. 是，将这个`bucket_t(@selector(test), _imp`缓存在索引`i`对应的空间
     2. 否，检查索引`i-1`对应的空间是否为`NULL`，以此类推，如果索引<0，则使索引=_mask-1，并检查对应的空间是否为`NULL`，直到找到索引空间为`NULL`的再缓存
 
+### API
+#### 类
+动态创建一个类（参数：父类，类名，额外的内存空间）```c
+Class objc_allocateClassPair(Class superclass, const char *name, size_t extraBytes)
+```注册一个类（要在类注册之前添加成员变量）```c
+void objc_registerClassPair(Class cls) 
+```销毁一个类```c
+void objc_disposeClassPair(Class cls)
+```获取isa指向的Class```c
+Class object_getClass(id obj)
+```设置isa指向的Class```c
+Class object_setClass(id obj, Class cls)
+```判断一个OC对象是否为Class```c
+BOOL object_isClass(id obj)
+```判断一个Class是否为元类```c
+BOOL class_isMetaClass(Class cls)
+```获取父类```c
+Class class_getSuperclass(Class cls)
+```
+
+#### 成员变量
+获取一个实例变量信息Ivar class_getInstanceVariable(Class cls, const char *name)拷贝实例变量列表（最后需要调用free释放）Ivar *class_copyIvarList(Class cls, unsigned int *outCount)设置和获取成员变量的值void object_setIvar(id obj, Ivar ivar, id value)id object_getIvar(id obj, Ivar ivar)动态添加成员变量（已经注册的类是不能动态添加成员变量的）BOOL class_addIvar(Class cls, const char * name, size_t size, uint8_t alignment, const char * types)获取成员变量的相关信息const char *ivar_getName(Ivar v)const char *ivar_getTypeEncoding(Ivar v)
