@@ -1,28 +1,4 @@
 # Category
-详见 [深入理解Objective-C：Category](https://tech.meituan.com/2015/03/03/diveintocategory.html)
-
-### Interview:
-#### Q: Category有哪些用途：
-```
-1. 给已经存在的类添加方法，协议，属性
-2. 把类的实现分开在不同的文件里
-```
-#### Q: Category的实现原理？ 
-```
-Category实际上是一个category_t的结构体，在运行期，Category的数据(实例方法，类方法，协议，属性)都被以倒序插入到原有类的数据的前面。
-a). 其中 倒序 是通过 lists[ATTACH_BUFSIZ - ++mcount] = list;
-b). 插入到原有类数据的前面 是通过 mememove 和 memcpy 实现;
-```
-#### Q: Category能否添加成员变量吗？能否添加属性吗？
-```
-1. Category的结构决定了不能添加成员变量，其结构体内没有容纳Ivar的数据结构
-2. 可以添加属性，系统会给我们声明setter和getter方法，但是并没有实现，所以实际上来说是不能直接添加属性，但是可以通过Runtime的 objc_setAssociatedObject 和 objc_getAssociatedObject 这两个API来间接实现
-```
-#### Q: 如果ClassA和它的ClassA(CategoryOne)，ClassA(CategoryTwo)都实现了某个方法，那么最终会如何调用?
-![-w600](media/16387749069310/16389540761030.jpg)
-#### Q: Category 和 Class Extension 有什么区别？
-```
-```
 
 ### OC示例
 创建 HFPerson，HFPerson (Test) 
@@ -57,7 +33,7 @@ static struct _category_t _OBJC_$_CATEGORY_HFPerson_$_Test __attribute__ ((used,
 	"HFPerson",
 	0, // &OBJC_CLASS_$_HFPerson,
 	(const struct _method_list_t *)&_OBJC_$_CATEGORY_INSTANCE_METHODS_HFPerson_$_Test,
-	0,
+	0, // 如果声明了类方法，也会放到这里
 	0,
 	(const struct _prop_list_t *)&_OBJC_$_PROP_LIST_HFPerson_$_Test,
 };
@@ -334,7 +310,7 @@ attachCategories(Class cls, const locstamped_category_t *cats_list, uint32_t cat
     rwe->protocols.attachLists(protolists + ATTACH_BUFSIZ - protocount, protocount);
 }
 ```
-* 按照Compil Sources中的先后编译顺序，***倒序***放入对应的列表中，如果某个类的多个分类中有同名的方法，后编译的先执行
+* 按照Compile Sources中的先后编译顺序，***倒序***放入对应的列表中，如果某个类的多个分类中有同名的方法，后编译的先执行
 
 
 #### attachLists(...)函数(objc-runtime-new.mm)
@@ -383,7 +359,7 @@ void attachLists(List* const * addedLists, uint32_t addedCount) {
 
 1. 通过`Runtime`加载某个类的所有`Category`数据
 2. 把所有`Category`的方法，属性，协议数据，合并到一个大数组中
-3. 后面参与编译的`Category`数据，会在数组的前面
+3. 先参与编译的`Category`数据，会放在数组的后面
 4. 将合并后的分类数据（方法，属性，协议），插入到类原来数据的前面
 
 #### 重要代码
@@ -399,6 +375,36 @@ memcpy(array()->lists, addedLists, addedCount * sizeof(array()->lists[0]));
 * memmove会根据内存大小，移动方向，数量来移动内存；
 * memcpy是按照一定规则一个地址一个地址拷贝。
 * memmove能保证原数据完整性，内部移动最好不要使用memcpy，外部内存移动可以使用。
+
+### 面试:
+#### Q: Category有哪些用途：
+```
+1. 给已经存在的类添加方法，协议，属性
+2. 把类的实现分开在不同的文件里
+```
+#### Q: Category的实现原理？ 
+```
+Category实际上是一个category_t的结构体，在运行期，Category的数据(实例方法，类方法，协议，属性)都被以倒序插入到原有类的数据的前面。
+a). 其中 倒序 是通过 lists[ATTACH_BUFSIZ - ++mcount] = list;
+b). 插入到原有类数据的前面 是通过 mememove 和 memcpy 实现;
+```
+#### Q: Category能否添加成员变量吗？能否添加属性吗？
+```
+1. Category的结构决定了不能添加成员变量，其结构体内没有容纳Ivar的数据结构
+2. 可以添加属性，系统会给我们声明setter和getter方法，但是并没有实现，所以实际上来说是不能直接添加属性，但是可以通过Runtime的 objc_setAssociatedObject 和 objc_getAssociatedObject 这两个API来间接实现
+```
+#### Q: 如果ClassA和它的ClassA(CategoryOne)，ClassA(CategoryTwo)都实现了某个方法，那么最终会如何调用?
+![-w600](media/16387749069310/16389540761030.jpg)
+#### Q: Category 和 Class Extension 有什么区别？
+
+| 区别    | Category           | Extension           |
+| :----: | :----: | :----: |
+| 生效时机 | 运行时           | 编译时             |
+| 添加属性 | 可以</br>（只声明setter/getter，未实现）| 可以                     |
+| 添加方法 | 可以</br>（通常将一类方法单独放在一个文件里面）| 可以</br>(通常在.m文件中实现) |
+| 示例 | @interface ClassName (category)</br> @end</br>@implementation</br>@end| @interface ClassName()</br>@end |
+
+
 
 ### 动态绑定
 如上分析，我们知道在`category`里面是无法为`category`添加实例变量的。但是我们很多时候需要在`category`中添加和对象关联的值，这个时候可以求助关联对象来实现：
@@ -418,6 +424,7 @@ memcpy(array()->lists, addedLists, addedCount * sizeof(array()->lists[0]));
 }
 @end
 ```
+
 
 #### C++代码
 ```c++

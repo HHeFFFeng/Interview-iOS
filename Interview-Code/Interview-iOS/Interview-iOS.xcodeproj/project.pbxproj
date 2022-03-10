@@ -23,6 +23,7 @@
 		A70D10E827C8A5240077DB94 /* KVOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10E727C8A5240077DB94 /* KVOPerson.m */; };
 		A70D10F027C8DBD80077DB94 /* KVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10EF27C8DBD80077DB94 /* KVCViewController.m */; };
 		A70D10F327C8DC600077DB94 /* KVCPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A70D10F227C8DC600077DB94 /* KVCPerson.m */; };
+		A728B06027D995DB00A7C949 /* NSObject+Test.m in Sources */ = {isa = PBXBuildFile; fileRef = A728B05F27D995DB00A7C949 /* NSObject+Test.m */; };
 		A730C88727CDBA7900765B5E /* RuntimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A730C88627CDBA7900765B5E /* RuntimeViewController.m */; };
 		A76518F427CDB85F00A31131 /* BlockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76518F327CDB85F00A31131 /* BlockViewController.m */; };
 		A7FCC32A27CF37D800896F0E /* RTPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FCC32927CF37D800896F0E /* RTPerson.m */; };
@@ -65,6 +66,9 @@
 		A70D10EF27C8DBD80077DB94 /* KVCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVCViewController.m; sourceTree = "<group>"; };
 		A70D10F127C8DC600077DB94 /* KVCPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KVCPerson.h; sourceTree = "<group>"; };
 		A70D10F227C8DC600077DB94 /* KVCPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVCPerson.m; sourceTree = "<group>"; };
+		A728B05E27D995DB00A7C949 /* NSObject+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test.h"; sourceTree = "<group>"; };
+		A728B05F27D995DB00A7C949 /* NSObject+Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test.m"; sourceTree = "<group>"; };
+		A728B06127D9A41C00A7C949 /* NSObject+Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "NSObject+Test.cpp"; sourceTree = "<group>"; };
 		A730C88527CDBA7900765B5E /* RuntimeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RuntimeViewController.h; sourceTree = "<group>"; };
 		A730C88627CDBA7900765B5E /* RuntimeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RuntimeViewController.m; sourceTree = "<group>"; };
 		A730C88827CDBFDD00765B5E /* RTPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTPerson.h; sourceTree = "<group>"; };
@@ -212,6 +216,9 @@
 		A76518F027CDB6F200A31131 /* category */ = {
 			isa = PBXGroup;
 			children = (
+				A728B05E27D995DB00A7C949 /* NSObject+Test.h */,
+				A728B05F27D995DB00A7C949 /* NSObject+Test.m */,
+				A728B06127D9A41C00A7C949 /* NSObject+Test.cpp */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -345,6 +352,7 @@
 				A70D10B927C5CCFB0077DB94 /* ViewController.m in Sources */,
 				A730C88727CDBA7900765B5E /* RuntimeViewController.m in Sources */,
 				A70CBBC627D6F72E00B2B831 /* RTAPI.m in Sources */,
+				A728B06027D995DB00A7C949 /* NSObject+Test.m in Sources */,
 				A7FCC32A27CF37D800896F0E /* RTPerson.m in Sources */,
 				A70D10E827C8A5240077DB94 /* KVOPerson.m in Sources */,
 				A70D10F027C8DBD80077DB94 /* KVCViewController.m in Sources */,

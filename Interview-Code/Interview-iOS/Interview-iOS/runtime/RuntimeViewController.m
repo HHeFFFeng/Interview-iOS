@@ -8,6 +8,7 @@
 #import "RuntimeViewController.h"
 #import "RTPerson.h"
 #import "RTAPI.h"
+#import "NSObject+Test.h"
 
 @interface RuntimeViewController ()
 @property (nonatomic, strong) RTPerson *person;
@@ -18,13 +19,28 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    [self testAPI];
+    [self testCategory];
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//    {
+//        self.person.tall = NO;
+//        self.person.rich = YES;
+//        HFLog(@"high: %d, rich: %d, handsome: %d", _person.isTall, _person.isRich, _person.isHandsome);
+//    }
+    
+    [NSObject outputMyPropertyList];
+}
+
+// MARK: - category
+- (void)testCategory {
+    self.person.num = @"123";
+}
+
+// MARK: - runtime 相关api
 - (void)testAPI {
     RTAPI *api = [RTAPI new];
-//    [api testGetInstanceVariable];
+    [api testGetInstanceVariable];
     [api testCopyIvarList];
 }
 
@@ -44,10 +60,5 @@
     HFLog(@"high: %d, rich: %d, handsome: %d", _person.isTall, _person.isRich, _person.isHandsome);
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    self.person.tall = NO;
-    self.person.rich = YES;
-    HFLog(@"high: %d, rich: %d, handsome: %d", _person.isTall, _person.isRich, _person.isHandsome);
-}
 
 @end
