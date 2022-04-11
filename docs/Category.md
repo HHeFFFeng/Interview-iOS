@@ -87,7 +87,7 @@ static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO =
 
 1. 编译器生成了实例方法列表(结构体)`_OBJC_$_CATEGORY_INSTANCE_METHODS_HFPerson_$_Test`和属性列表(结构体)`_OBJC_$_PROP_LIST_HFPerson_$_Test`，还有一个需要注意到的事实就是category的名字用来给各种列表以及后面的category结构体本身命名，而且有static来修饰，所以在同一个编译单元里我们的category名不能重复，否则会出现编译错误
 2. 编译器生成了category本身`_OBJC_$_CATEGORY_HFPerson_$_Test`，并用前面生成的列表来初始化category本身
-3. 最后，编译器在DATA段下的objc_catlist section里保存了一个大小为1的category_t的数组L_OBJC_LABELCATEGORY$（当然，如果有多个category，会生成对应长度的数组^_^），用于运行期category的加载
+3. 最后，编译器在DATA段下的objc_catlist section里保存了一个大小为1的category_t的数组L_OBJC_LABELCATEGORY$（当然，如果有多个category，会生成对应长度的数组），用于运行期category的加载
 
 ### 如何加载
 #### _objc_init入口(objc-os.mm)

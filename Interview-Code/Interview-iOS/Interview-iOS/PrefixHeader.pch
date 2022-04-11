@@ -12,9 +12,9 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
 #ifdef DEBUG
-#define HFLog(format, ...) printf("[%s] %s [第%d行]👉 %s\n", __TIME__, __FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ## __VA_ARGS__] UTF8String]);
+#define HFLog(format, ...) NSLog((@"%s [第%d行] 👉 " format), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
-#define HFLog(format, ...)
+#define HFLog(...)
 #endif
 
 

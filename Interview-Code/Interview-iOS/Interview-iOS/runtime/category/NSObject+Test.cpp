@@ -34825,6 +34825,7 @@ struct NSUUID_IMPL {
 #pragma clang assume_nonnull begin
 
 // @interface NSObject (Test)
+// @property (nonatomic, copy) NSString *num;
 
 // + (void)outputMyPropertyList;
 
@@ -35362,6 +35363,12 @@ class_createInstanceFromZone(Class _Nullable, size_t idxIvars,
 
 
 static void _C_NSObject_Test_outputMyPropertyList(Class self, SEL _cmd) {
+    unsigned int count;
+    objc_property_t *properyList = class_copyPropertyList(((Class (*)(id, SEL))(void *)objc_msgSend)((id)self, sel_registerName("class")), &count);
+    NSMutableArray *array = ((NSMutableArray * _Nonnull (*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass("NSMutableArray"), sel_registerName("array"));
+    for (int i = 0; i < count; i++) {
+        ((void (*)(id, SEL, ObjectType _Nonnull))(void *)objc_msgSend)((id)array, sel_registerName("addObject:"), (id _Nonnull)((NSString * _Nullable (*)(id, SEL, const char * _Nonnull))(void *)objc_msgSend)((id)objc_getClass("NSString"), sel_registerName("stringWithUTF8String:"), property_getName(properyList[i])));
+    }
 
 }
 
@@ -35444,6 +35451,16 @@ static struct /*_method_list_t*/ {
 	{{(struct objc_selector *)"outputMyPropertyList", "v16@0:8", (void *)_C_NSObject_Test_outputMyPropertyList}}
 };
 
+static struct /*_prop_list_t*/ {
+	unsigned int entsize;  // sizeof(struct _prop_t)
+	unsigned int count_of_properties;
+	struct _prop_t prop_list[1];
+} _OBJC_$_PROP_LIST_NSObject_$_Test __attribute__ ((used, section ("__DATA,__objc_const"))) = {
+	sizeof(_prop_t),
+	1,
+	{{"num","T@\"NSString\",C,N"}}
+};
+
 extern "C" __declspec(dllimport) struct _class_t OBJC_CLASS_$_NSObject;
 
 static struct _category_t _OBJC_$_CATEGORY_NSObject_$_Test __attribute__ ((used, section ("__DATA,__objc_const"))) = 
@@ -35453,7 +35470,7 @@ static struct _category_t _OBJC_$_CATEGORY_NSObject_$_Test __attribute__ ((used,
 	0,
 	(const struct _method_list_t *)&_OBJC_$_CATEGORY_CLASS_METHODS_NSObject_$_Test,
 	0,
-	0,
+	(const struct _prop_list_t *)&_OBJC_$_PROP_LIST_NSObject_$_Test,
 };
 static void OBJC_CATEGORY_SETUP_$_NSObject_$_Test(void ) {
 	_OBJC_$_CATEGORY_NSObject_$_Test.cls = &OBJC_CLASS_$_NSObject;

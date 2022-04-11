@@ -68,13 +68,13 @@
 		A70D10F227C8DC600077DB94 /* KVCPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KVCPerson.m; sourceTree = "<group>"; };
 		A728B05E27D995DB00A7C949 /* NSObject+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Test.h"; sourceTree = "<group>"; };
 		A728B05F27D995DB00A7C949 /* NSObject+Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Test.m"; sourceTree = "<group>"; };
-		A728B06127D9A41C00A7C949 /* NSObject+Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "NSObject+Test.cpp"; sourceTree = "<group>"; };
 		A730C88527CDBA7900765B5E /* RuntimeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RuntimeViewController.h; sourceTree = "<group>"; };
 		A730C88627CDBA7900765B5E /* RuntimeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RuntimeViewController.m; sourceTree = "<group>"; };
 		A730C88827CDBFDD00765B5E /* RTPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTPerson.h; sourceTree = "<group>"; };
 		A730C88927CDBFDD00765B5E /* RTPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTPerson.m; sourceTree = "<group>"; };
 		A76518F227CDB85F00A31131 /* BlockViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockViewController.h; sourceTree = "<group>"; };
 		A76518F327CDB85F00A31131 /* BlockViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockViewController.m; sourceTree = "<group>"; };
+		A7BD57FA27F4269D001BEC05 /* NSObject+Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "NSObject+Test.cpp"; sourceTree = "<group>"; };
 		A7FCC31C27CF156900896F0E /* RTPerson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTPerson.h; sourceTree = "<group>"; };
 		A7FCC31D27CF156900896F0E /* RTPerson.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTPerson.m; sourceTree = "<group>"; };
 		A7FCC32327CF196F00896F0E /* RTPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTPerson.h; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 			children = (
 				A728B05E27D995DB00A7C949 /* NSObject+Test.h */,
 				A728B05F27D995DB00A7C949 /* NSObject+Test.m */,
-				A728B06127D9A41C00A7C949 /* NSObject+Test.cpp */,
+				A7BD57FA27F4269D001BEC05 /* NSObject+Test.cpp */,
 			);
 			path = category;
 			sourceTree = "<group>";

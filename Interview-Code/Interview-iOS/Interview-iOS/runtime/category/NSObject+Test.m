@@ -17,7 +17,7 @@
     for (int i = 0; i < count; i++) {
         [array addObject: [NSString stringWithUTF8String: property_getName(properyList[i])]];
     }
-    HFLog(@"%@ propery list: %@", [self class], array);
+//    HFLog(@"%@ propery list: %@", [self class], array);
 }
 
 @end

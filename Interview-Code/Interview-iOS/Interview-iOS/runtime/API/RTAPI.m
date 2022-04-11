@@ -88,7 +88,7 @@
 }
 
 - (void)run {
-    HFLog(@"run")
+    HFLog(@"run");
 }
 
 @end
