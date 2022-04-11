@@ -26,11 +26,11 @@
 
 ### 原理
 #### 赋值
-![kvc_setvalue](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16460277133646.jpg)
+![kvc_setvalue](media/16460277133646.jpg)
 
 
 #### 取值
-![kvc_getvalue](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16460290183818.jpg)
+![kvc_getvalue](media/16460290183818.jpg)
 
 ### 应用
 #### 1. 动态地取值和设值
