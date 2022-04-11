@@ -8,12 +8,12 @@
 
 ### 执行流程
 #### 消息发送
-![-w500](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16417455766634.jpg)</br>
+![-w500](media/16417455766634.jpg)</br>
 * 从`method_list`中查找，根据是否排序分为`二分查找`和`遍历查找`
 * 把方法缓存到`objc_class`中的`Cache`的方式和之前将的`方法缓存`逻辑一致
 
 #### 动态解析
-![-w500](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16417462017175.jpg)</br>
+![-w500](media/16417462017175.jpg)</br>
 两种实现方式：</br>
 * 第一种
 ```c
@@ -49,7 +49,7 @@ void other(id self, SEL _cmd) {
 ```
 
 #### 消息转发
-![-w500](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16417338809816.jpg)</br>
+![-w500](media/16417338809816.jpg)</br>
 以下方法都有`实例方法`和`类方法`两个版本，不过`Xcode`无法自动补全`类方法`，导致很多人误以为只有`实例方法`。
 ```objc
 - (id)forwardingTargetForSelector:(SEL)aSelector {

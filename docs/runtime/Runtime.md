@@ -39,7 +39,7 @@ union isa_t {
 ```
 
 ### 类对象 的数据结构
-![objc_class-w800](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/WX20220302-170556%402x.png)
+![objc_class-w800](media/WX20220302-170556%402x.png)
 
 
 
@@ -118,7 +118,7 @@ struct method_t {
 `typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...);`
 
 ##### Type Encoding
-![type_encoding-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/runtime/media/16413706237683.jpg)
+![type_encoding-w600](media/16413706237683.jpg)
 
 
 ### 方法缓存 cache

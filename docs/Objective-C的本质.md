@@ -73,11 +73,11 @@ NSObject *obj = [[NSObject alloc] init];
 * class对象（类对象）
 * meta-class对象（元类对象）
 
-![isa-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16383263208604/16384230173802.jpg)
+![isa-w600](media/16383263208604/16384230173802.jpg)
 
 ### isa 和 superclass
 
-![isa_and_superclass-w600](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16383263208604/16384236128080.jpg)
+![isa_and_superclass-w600](media/16383263208604/16384236128080.jpg)
 
 ### class方法，object_getClass 和 objc_getClass 三者的区别
 ####  `class`方法

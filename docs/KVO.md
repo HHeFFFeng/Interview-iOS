@@ -67,7 +67,7 @@
 内部会调用 observer 的 observeValueForKeyPath:ofObject:change:context: 方法
 ```
 
-![NSKVONotifying_A](https://github.com/HHeFFFeng/Interview-iOS/blob/main/docs/media/16457771865823.jpg)
+![NSKVONotifying_A](media/16457771865823.jpg)
 
 ### 验证
 #### object_getClass，打印isa指向的对象
