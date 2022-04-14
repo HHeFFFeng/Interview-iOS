@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self testCategory];
+    [self testUnion];
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -54,7 +54,7 @@
     
     // char _tallRichHandsome;
     // 标志位直接用 二进制 表示
-    self.person = [RTPerson new];
+    self.person = [[RTPerson alloc] init];
     self.person.tall = YES;
     self.person.handsome = YES;
     HFLog(@"high: %d, rich: %d, handsome: %d", _person.isTall, _person.isRich, _person.isHandsome);
