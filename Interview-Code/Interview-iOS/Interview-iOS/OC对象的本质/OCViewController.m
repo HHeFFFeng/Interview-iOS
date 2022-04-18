@@ -7,6 +7,8 @@
 
 #import "OCViewController.h"
 #import "OCStudent.h"
+#import "OCPerson.h"
+#import <objc/runtime.h>
 
 @interface OCViewController ()
 
@@ -50,7 +52,11 @@
         [stu testA];
     }
     
+    OCPerson *person = [[OCPerson alloc] init];
+    person.nickName = @"CC";
+    NSLog(@"%lu", sizeof(person));
     
+    NSLog(@"%lu", class_getInstanceSize([OCPerson class]));
 }
 
 
