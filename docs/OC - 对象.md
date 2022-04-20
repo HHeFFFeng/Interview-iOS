@@ -1,5 +1,6 @@
 # 对象
-### alloc方法
+### 初始化过程
+#### alloc方法
 ```objc
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -19,14 +20,14 @@ p: <HFPerson: 0x10070db90>, p1: <HFPerson: 0x10070db90>, p2: <HFPerson: 0x10070d
 ![](media/16502633941954.jpg)
 
 
-#### 1. objc_alloc
+##### 1. objc_alloc
 ```c++
 // Calls [cls alloc].
 id objc_alloc(Class cls) {
 =>    return callAlloc(cls, true/*checkNil*/, false/*allocWithZone*/);
 }
 ```
-#### 2. callAlloc
+##### 2. callAlloc
 ```c++
 // Call [cls alloc] or [cls allocWithZone:nil], with appropriate
 // shortcutting optimizations.
@@ -61,7 +62,7 @@ callAlloc(Class cls, bool checkNil, bool allocWithZone=false)
 通过这两个指令，编译器在编译过程中，会将可能性更大的代码紧跟着前面的代码，从而减少代码读取时指令跳转带来的性能上的下降。</br>
 `callAlloc`方法里主要判断当前类是否有重写`allocWithZone`方法，如果有，就调用`allocWithZone`，若没有，就调用`objc_rootAllocWithZone`。因此，如果存在单例类，就需要重写`allocWithZone`，确保实例化的一定是单例对象。
 
-#### 3. _objc_rootAllocWithZone
+##### 3. _objc_rootAllocWithZone
 ```c++
 id _objc_rootAllocWithZone(Class cls, malloc_zone_t *zone __unused)
 {
@@ -71,7 +72,7 @@ id _objc_rootAllocWithZone(Class cls, malloc_zone_t *zone __unused)
 }
 ```
 
-#### 4. _class_createInstanceFromZone
+##### 4. _class_createInstanceFromZone
 ```c++
 static ALWAYS_INLINE id
 _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone,
@@ -131,7 +132,7 @@ _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone,
 `canAllocNonpointer()`：表示是否对 isa 指针开启指针优化。0：纯isa指针；1：不⽌是类对象地址，isa 中还包含了类信息、对象的引⽤计数等。</br>
 `zone`：在iOS8之后，iOS就不再通过zone来申请内存空间了，所以zone传参为nil。</br>
 
-##### 计算所需内存大小的具体实现：
+###### 计算所需内存大小的具体实现：
 `cls->instanceSize(extraBytes)`是进行内存对齐得到的实例大小，里面的流程分别如下：
 ```c++
 size_t instanceSize(size_t extraBytes) {
@@ -168,7 +169,7 @@ static inline size_t align16(size_t x) {
 #endif
 ```
 
-##### 申请内存，并返回内存地址
+###### 申请内存，并返回内存地址
 ```c
 obj = (id)calloc(1, size);
 ```
@@ -194,7 +195,7 @@ segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
 }
 ```
 
-##### 初始化`isa_t isa`的具体实现:
+###### 初始化`isa_t isa`的具体实现:
 ```c++
 inline void 
 objc_object::initIsa(Class cls, bool nonpointer, UNUSED_WITHOUT_INDEXED_ISA_AND_DTOR_BIT bool hasCxxDtor)
@@ -237,13 +238,13 @@ uintptr_t是unsigned long类型，由于机器只能识别0 、1这两种数字�
 * 为什么要右移3位？</br>
 地址转换为64位二进制数后，其低3位和高位均是0，所以为了优化内存，可以舍掉这些0 ，只保留中间部分有值的位。
 
-#### alloc总结
+##### alloc总结
 一般在这里就完成了对象的实例化，主要经过了三个步骤：
 * `cls->instanceSize`：计算需要申请的内存空间大小，最少16字节。
 * `calloc`：为对象分配内存空间，并返回内存地址。
 * `initInstanceIsa`：初始化`isa_t isa`(其中包含 否有析构函数、对象的引⽤计数等其他信息)，通过它将当前类和开辟的内存空间关联起来。
 
-### init方法
+#### init方法
 ```c++
 - (id)init {
     return _objc_rootInit(self);
@@ -259,7 +260,7 @@ id _objc_rootInit(id obj)
 `init`方法其实没作其他处理，直接返回对象自身。</br>
 系统采用工厂设计模式提供了一个构造方法，让开发者重写`init`作相关初始化操作。
 
-### new方法
+#### new方法
 ```c++
 + (id)new {
     return [callAlloc(self, false/*checkNil*/) init];
@@ -371,3 +372,63 @@ segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
     return slot_bytes;
 }
 ```
+
+### 本质
+#### 准备知识
+* `clang:` apple主导编写，基于`LLVM`的`C/C++/OC`的编译器
+* `Objective-C`代码的底层实现都是`C/C++`代码，通过这个过程`Objective-C` ——> `C/C++` ——> `汇编语言` ——> `机器语言`转成机器能识别的语言
+    * **.h** ：头文件。头文件包含类，类型，函数和常数的声明。 
+    * **.m** ：源代码文件。这是典型的源代码文件扩展名，可以包含Objective-C和C代码。 
+    * **.mm** ：源代码文件。带有这种扩展名的源代码文件，除了可以包含Objective-C和C代码以外还可以包含C++代码。仅在你的Objective-C代码中确实需要使用C++类或者特性的时候才用这种扩展名
+    * **.cpp**：只能编译C++ 
+
+#### 将 `main.m` 转成 `main.mm`
+```
+//1、将 main.m 编译成 main.cpp
+clang -rewrite-objc main.m -o main.cpp
+
+//2、将 ViewController.m 编译成  ViewController.cpp
+clang -rewrite-objc -fobjc-arc -fobjc-runtime=ios-13.0.0 -isysroot / /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator13.7.sdk ViewController.m
+
+//以下两种方式是通过指定架构模式的命令行，使用xcode工具 xcrun
+//3、模拟器文件编译
+- xcrun -sdk iphonesimulator clang -arch arm64 -rewrite-objc main.m -o main-arm64.cpp 
+
+//4、真机文件编译
+- xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m -o main- arm64.cpp 
+```
+
+#### NSObject 在 C++ 中的结构:
+```c++
+struct NSObject_IMPL {
+	Class isa;
+};
+其中
+Class：typedef struct objc_class *Class，可发现 isa 是指向 结构体 的指针
+```
+声明一个OCStudent类:
+```objc
+@interface OCStudent : NSObject
+{
+    @public
+    NSString *_name;
+    int _age;
+}
+@end
+```
+对应 C++ 中的结构：
+```c++
+struct OCStudent_IMPL {
+	struct NSObject_IMPL NSObject_IVARS;
+	NSString *_name;
+	int _age;
+};
+```
+![HFPerson](media/Snipaste_2022-04-20_18-00-49.png)
+![HFPerson.cpp](media/Snipaste_2022-04-20_17-59-46.png)
+
+##### `objc_setProperty()`
+涉及 **适配器设计模式**
+
+#### 结论
+OC对象的本质其实就是**结构体**

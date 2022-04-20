@@ -1,11 +1,8 @@
 # Objective-C的本质
-### Objective-C 代码的底层实现
-```c++
-都是 C/C++代码
-```
+
 ### Objective-C 如何转成计算机所认识的语言
 ```
-Objective-C ——> C/C++ ——> 汇编语言 ——> 机器语言
+
 ```
 * **.h** ：头文件。头文件包含类，类型，函数和常数的声明。 
 * **.m** ：源代码文件。这是典型的源代码文件扩展名，可以包含Objective-C和C代码。 
@@ -24,34 +21,6 @@ Objective-C ——> C/C++ ——> 汇编语言 ——> 机器语言
 
 xcrun  -sdk  iphoneos  clang  -arch  arm64  -rewrite-objc  OC源文件  -o  输出的CPP文件
 ```
-
-### NSObject 在 C++ 中的结构:
-```c++
-struct NSObject_IMPL {
-	Class isa;
-};
-其中
-Class：typedef struct objc_class *Class，可发现 isa 是指向 结构体 的指针
-```
-声明一个OCStudent类:
-```objc
-@interface OCStudent : NSObject
-{
-    @public
-    NSString *_name;
-    int _age;
-}
-@end
-```
-对应 C++ 中的结构：
-```c++
-struct OCStudent_IMPL {
-	struct NSObject_IMPL NSObject_IVARS;
-	NSString *_name;
-	int _age;
-};
-```
-
 
 ### 获取 NSObject 对象占用了多少内存
 ``` c++
