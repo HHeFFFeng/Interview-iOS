@@ -1,5 +1,5 @@
 # 对象
-### alloc流程
+### alloc方法
 ```objc
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -130,6 +130,7 @@ _class_createInstanceFromZone(Class cls, size_t extraBytes, void *zone,
 `hasCxxDtor()`：该对象是否有 C++ 或者 Objc 的析构器，如果有析构函数，则需要做析构逻辑，如果没有，  则可以更快的释放对象。</br>
 `canAllocNonpointer()`：表示是否对 isa 指针开启指针优化。0：纯isa指针；1：不⽌是类对象地址，isa 中还包含了类信息、对象的引⽤计数等。</br>
 `zone`：在iOS8之后，iOS就不再通过zone来申请内存空间了，所以zone传参为nil。</br>
+
 ##### 计算所需内存大小的具体实现：
 `cls->instanceSize(extraBytes)`是进行内存对齐得到的实例大小，里面的流程分别如下：
 ```c++
@@ -166,6 +167,33 @@ static inline size_t align16(size_t x) {
 #   define WORD_MASK 3UL
 #endif
 ```
+
+##### 申请内存，并返回内存地址
+```c
+obj = (id)calloc(1, size);
+```
+分析`calloc`得深入到`libmalloc`源码，其中核心的地方在于验证了现在的iOS内存对齐方式是以16字节对齐
+```c
+#define SHIFT_NANO_QUANTUM      4
+#define NANO_REGIME_QUANTA_SIZE (1 << SHIFT_NANO_QUANTUM)   // 16
+
+static MALLOC_INLINE size_t
+segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
+{
+    size_t k, slot_bytes;
+    //k + 15 >> 4 << 4 --- 右移 + 左移 -- 后4位抹零，类似于16的倍数，跟 k/16 * 16一样
+    //---16字节对齐算法，小于16就成0了
+    if (0 == size) {
+        size = NANO_REGIME_QUANTA_SIZE; // Historical behavior
+    }
+    k = (size + NANO_REGIME_QUANTA_SIZE - 1) >> SHIFT_NANO_QUANTUM; // round up and shift for number of quanta
+    slot_bytes = k << SHIFT_NANO_QUANTUM;                           // multiply by power of two quanta size
+    *pKey = k - 1;                                                  // Zero-based!
+
+    return slot_bytes;
+}
+```
+
 ##### 初始化`isa_t isa`的具体实现:
 ```c++
 inline void 
@@ -267,36 +295,79 @@ id _objc_rootInit(id obj)
 #### 分析 person 实例对象的内存结构
 ![](media/16502686414657.jpg)
 
-### 
+### NSObject 和 HFPerson 调用 alloc 流程
+![](media/16503352277329.jpg)
+#### 1. 为什么我们调用的是 alloc 方法，到底层却是调的 objc_alloc?
+LLVM 对 alloc 的特殊修饰 => 任何调用 alloc方法 都会被替换成调用 objc_alloc。
+#### 2. 对于 HFPerson 类为什么会走两次 callAlloc 方法?
 
-### 访问类信息
-通过以上分析，我们知道 isa 的成员 shiftcls 存有类对象地址，那如何通过 isa 访问到类对象的? </br>
-```c++
-#import <objc/runtime.h>
 
-Class object_getClass(id obj)
-{
-    if (obj) return obj->getIsa();
-    else return Nil;
-}
+### 内存对齐
+>每个特定平台上的编译器都有自己的默认“对齐系数”(也叫对齐模数)。程序员可以通过预编译命令#pragma pack(n)，n=1,2,4,8,16来改变这一系数，其中的n就是你要指定的“对齐系数”。在ios中，Xcode默认为#pragma pack(8)，即8字节对齐
 
-.
-.
-.
 
-inline Class
-isa_t::getClass(MAYBE_UNUSED_AUTHENTICATED_PARAM bool authenticated) {
-    uintptr_t clsbits = bits;
-    clsbits &= ISA_MASK;
-    return (Class)clsbits;
-}
+![各类数据所占内存大小](media/2251862-19673aeab7ce44b2.jpg)
+
+#### 规则:
+* **数据成员对齐规则:** struct 或者 union 的数据成员，第一个数据成员放在offset为0的地方，以后每个数据成员存储的起始位置要从该成员大小或者成员的子成员大小（只要该成员有子成员，比如数据、结构体等）的整数倍开始（例如int在32位机中是4字节，则要从4的整数倍地址开始存储）
+* **数据成员为结构体:** 如果一个结构里有某些结构体成员，则结构体成员要从其内部最大元素大小的整数倍地址开始存储（例如：struct a里面存有struct b，b里面有char、int、double等元素，则b应该从8的整数倍开始存储）
+* **结构体的整体对齐规则:** 结构体的总大小，即sizeof的结果，必须是其内部最大成员的整数倍，不足的要补齐
+
+#### 获取内存大小的三种方式:
+* `sizeof:` 操作符，传入`数据类型`，在编译阶段就可以得到该类型占用的空间大小
+* `class_getInstanceSize:` 获取类的实例对象所占用的内存大小，其本质是获取实例对象中成员变量的内存大小
+* `malloc_size:` 获取系统实际分配的内存大小
+
+#### 实例：
+```c
+struct Mystruct1{
+    char a;     //1字节
+    double b;   //8字节
+    int c;      //4字节
+    short d;    //2字节
+} Mystruct1;
+
+struct Mystruct2{
+    double b;   //8字节
+    int c;      //4字节
+    short d;    //2字节
+    char a;     //1字节
+} Mystruct2;
 ```
 
-### note:
-1. 符号断点 </br>
-通过符号断点我们可以定位到指定的方法。
-2. 三种探索源码的方式：
-    1. 符号断点
-    2. `control` + `step into`
-    3. `debug` - `Always Show Disassembly`
-3. 编译器优化
+![内存对齐](media/2251862-54f12ed990f735c8.png)
+
+#### 内存优化
+对比上述`Mystruct1` 和 `Mystruct2`发现：`Mystruct1`需要补齐 9 个字节，`Mystruct2`只需补齐 1 个字节，可以看出：结构体的内存大小与成员的排列顺序有关。</br>
+* 大部分的内存都是通过固定的内存块进行读取
+* 尽管我们在内存中采用了**内存对齐**的方式，但并不是所有的内存都可以进行浪费的，苹果会自动**对属性进行重排**，以此来优化内存
+
+#### 字节对齐到底才用多少字节对齐？
+前面我们提到iOS中，xcode的默认对齐系数是**8字节**对齐，具体场景：</br>
+1. class_getInstanceSize，查看其源码可发现它是以 8字节 对齐
+2. malloc_size，其源码以 16字节 对齐
+
+#### 内存对齐算法
+从源码看，目前已知的有两种：
+```c
+1.
+static inline size_t align16(size_t x) {
+    return (x + size_t(15)) & ~size_t(15);
+}
+
+2.
+static MALLOC_INLINE size_t
+segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
+{
+    size_t k, slot_bytes;
+    //k + 15 >> 4 << 4 --- 右移 + 左移 -- 后4位抹零，类似于16的倍数，跟 k/16 * 16一样
+    //---16字节对齐算法，小于16就成0了
+    if (0 == size) {
+        size = NANO_REGIME_QUANTA_SIZE; // Historical behavior
+    }
+    k = (size + NANO_REGIME_QUANTA_SIZE - 1) >> SHIFT_NANO_QUANTUM; // round up and shift for number of quanta
+    slot_bytes = k << SHIFT_NANO_QUANTUM;                           // multiply by power of two quanta size
+    *pKey = k - 1;                                                  // Zero-based!
+    return slot_bytes;
+}
+```
