@@ -232,9 +232,9 @@ isa_t::setClass(Class newCls, UNUSED_WITHOUT_PTRAUTH objc_object *obj)
     shiftcls = (uintptr_t)newCls >> 3;
 }
 ```
+* `shiftcls = (uintptr_t)newCls >> 3;` 建立了**实例对象**与**类**之间的关系
 * 为什么要强转成uintptr_t类型？</br>
 uintptr_t是unsigned long类型，由于机器只能识别0 、1这两种数字，即二进制数据，所以将地址存储在内存空间时需要先转换为uintptr_t类型。
-
 * 为什么要右移3位？</br>
 地址转换为64位二进制数后，其低3位和高位均是0，所以为了优化内存，可以舍掉这些0 ，只保留中间部分有值的位。
 
