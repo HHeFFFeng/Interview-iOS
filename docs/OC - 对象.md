@@ -382,7 +382,7 @@ segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
     * **.mm** ：源代码文件。带有这种扩展名的源代码文件，除了可以包含Objective-C和C代码以外还可以包含C++代码。仅在你的Objective-C代码中确实需要使用C++类或者特性的时候才用这种扩展名
     * **.cpp**：只能编译C++ 
 
-#### 将 `main.m` 转成 `main.mm`
+#### 将 `main.m` 转成 `main.cpp`
 ```
 //1、将 main.m 编译成 main.cpp
 clang -rewrite-objc main.m -o main.cpp
@@ -399,6 +399,7 @@ clang -rewrite-objc -fobjc-arc -fobjc-runtime=ios-13.0.0 -isysroot / /Applicatio
 ```
 
 #### NSObject 在 C++ 中的结构:
+##### NSObject_IMPL
 ```c++
 struct NSObject_IMPL {
 	Class isa;
@@ -430,5 +431,33 @@ struct OCStudent_IMPL {
 ##### `objc_setProperty()`
 涉及 **适配器设计模式**
 
+##### 对象(isa) 与 类 的联系
+```c
+struct objc_object {
+    isa_t isa;
+}
+
+union isa_t {
+    // 因为是存在于共同体中，所以 bits / cls 是互斥的
+    uintptr_t bits;
+    Class cls; 
+    
+    struct {
+        uintptr_t nonpointer        : 1;  // 是否优化过，使用位域存储更多的信息                                       
+        uintptr_t has_assoc         : 1;  // 是否设置过关联对象                                   
+        uintptr_t has_cxx_dtor      : 1;  // 是否有C++的析构函数，如果没有，释放更快                                     
+        uintptr_t shiftcls          : 33; // 存储着Class, Meta-Class对象的内存地址
+        uintptr_t magic             : 6;  // 对象是否完成初始化                                     
+        uintptr_t weakly_referenced : 1;  // 是否被弱引用指向过，如果没有，释放时更快                                     
+        uintptr_t unused            : 1;  //                                      
+        uintptr_t has_sidetable_rc  : 1;  // 引用计数是否过大无法存储在isa中，如果为1，那么引用计数会存在一个叫 SideTable 的类的属性中                                    
+        uintptr_t extra_rc          : 19  // 存的值 = 引用计数 - 1
+    };
+};
+```
+通过前面的分析得知，实例对象的`isa`是在`_class_createInstanceFromZone`中的第三个核心方法`obj->initInstanceIsa(cls, hasCxxDtor);`与`类(cls)`关联起来
+
 #### 结论
 OC对象的本质其实就是**结构体**
+
+
