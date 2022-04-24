@@ -11,52 +11,13 @@
 * 交换方法实现（交换系统的方法）
 * 利用消息转发机制解决方法找不到的异常问题
 
-
-### 实例对象 的数据结构
-在`arm64`架构之前，`isa`就是一个普通的指针，存着`Class`，`Meta-Class`对象的内存地址</br>
-在`arm64`架构之后，对`isa`进行了优化，变成了下面这种`union`共用体结构，还是用`位域`存储着更多的信息，如 是否优化过，是否有关联对象，Class对象指针等等，具体如下所示:
-```c++
-struct objc_object {
-    isa_t isa;
-}
-
-union isa_t {
-    uintptr_t bits;
-    Class cls;
-    
-    struct {
-        uintptr_t nonpointer        : 1;  // 是否优化过，使用位域存储更多的信息                                       
-        uintptr_t has_assoc         : 1;  // 是否设置过关联对象                                   
-        uintptr_t has_cxx_dtor      : 1;  // 是否有C++的析构函数，如果没有，释放更快                                     
-        uintptr_t shiftcls          : 33; // 存储着Class, Meta-Class对象的内存地址
-        uintptr_t magic             : 6;  // 对象是否完成初始化                                     
-        uintptr_t weakly_referenced : 1;  // 是否被弱引用指向过，如果没有，释放时更快                                     
-        uintptr_t unused            : 1;  //                                      
-        uintptr_t has_sidetable_rc  : 1;  // 引用计数是否过大无法存储在isa中，如果为1，那么引用计数会存在一个叫 SideTable 的类的属性中                                    
-        uintptr_t extra_rc          : 19  // 存的值 = 引用计数 - 1
-    };
-};
-```
-
 ### 类对象 的数据结构
 ![objc_class-w800](media/WX20220302-170556%402x.png)
 
 
 
 ##### objc_class 结构
-```c++
-struct objc_class : objc_object {
-    Class isa;
-    Class superclass;
-    
-    cache_t cache;
-    class_data_bits_t bits;
-    
-    class_rw_t *data() const {
-        return (class_rw_t *)(bits & FAST_DATA_MASK);
-    }
-}
-```
+
 ##### class_rw_t 结构
 存放类中的`属性`、`方法`和`遵循的协议`等信息
 ```c++

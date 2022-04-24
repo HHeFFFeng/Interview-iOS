@@ -194,6 +194,7 @@ segregated_size_to_fit(nanozone_t *nanozone, size_t size, size_t *pKey)
     return slot_bytes;
 }
 ```
+如果再尝试打印**对象指针**的话，会发现所有对象内存地址的后四位都是 0，因为objc初始化内存时是以16字节对齐的
 
 ###### 初始化`isa_t isa`的具体实现:
 ```c++
@@ -236,7 +237,7 @@ isa_t::setClass(Class newCls, UNUSED_WITHOUT_PTRAUTH objc_object *obj)
 * 为什么要强转成uintptr_t类型？</br>
 uintptr_t是unsigned long类型，由于机器只能识别0 、1这两种数字，即二进制数据，所以将地址存储在内存空间时需要先转换为uintptr_t类型。
 * 为什么要右移3位？</br>
-地址转换为64位二进制数后，其低3位和高位均是0，所以为了优化内存，可以舍掉这些0 ，只保留中间部分有值的位。
+用于将 Class 指针中无用的后三位清楚减小内存的消耗，因为类的指针要按照字节（8 bytes）对齐内存，其指针后三位都是没有意义的 0。
 
 ##### alloc总结
 一般在这里就完成了对象的实例化，主要经过了三个步骤：
@@ -431,7 +432,9 @@ struct OCStudent_IMPL {
 ##### `objc_setProperty()`
 涉及 **适配器设计模式**
 
-##### 对象(isa) 与 类 的联系
+#### objc_object { isa_t isa; }
+在`arm64`架构之前，`isa`就是一个普通的指针，存着`Class`，`Meta-Class`对象的内存地址</br>
+在`arm64`架构之后，对`isa`进行了优化，变成了下面这种`union`共用体结构，还是用`位域`存储着更多的信息，如 是否优化过，是否有关联对象，Class对象指针等等，具体如下所示:
 ```c
 struct objc_object {
     isa_t isa;
