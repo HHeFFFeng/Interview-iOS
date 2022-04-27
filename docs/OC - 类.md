@@ -6,7 +6,7 @@
 ![isa_and_superclass-w600](media/16384236128080.jpg)
 
 ### 底层结构
-![objc_class-w800](runtime/media/WX20220302-170556%402x.png)
+![objc_class-w800](media/WX20220302-170556%402x.png)
 定义一个 HFPerson 类
 ```objc
 @interface HFPerson : NSObject
@@ -51,6 +51,27 @@ struct class_rw_t {
     protocol_array_t protocols; //协议列表
 }
 ```
+
+##### method_t 结构
+```c++
+struct method_t {
+    SEL name; // 函数名
+    const char *types; // type encoding 编码(返回类型，参数类型)
+    IMP imp; // 函数地址
+}
+```
+`SEL`: </br>
+方法/函数名，一般叫选择器，底层结构类似`char *`，可以通过`@selector()`和`sel_registerName()`获得，不同类中的相同名字的方法，所对应的方法选择器是相同的</br>
+
+`types`: </br>
+比如声明一个`-(void)test;`方法，对应的types大概是`v16@0:8`,其中16表示所有参数占用的空间大小，后面的0，8表示参数起始位置。`@`和`:`是两个默认的参数`(id)self`和`(SEL)_cmd`，可通过`@encode(type-name)`验证
+
+`IMP`: </br>
+函数的地址，代表函数的具体实现</br>
+`typedef id _Nullable (*IMP)(id _Nonnull, SEL _Nonnull, ...);`
+
+##### Type Encoding
+![type_encoding-w600](media/16413706237683.jpg)
 
 #### class_ro_t 结构
 存放类的初始信息
@@ -106,6 +127,55 @@ struct class_rw_t {
 }
 ```
 ![class_ro_t](media/Snipaste_2022-04-24_15-20-33.png)
+
+### 缓存`cache_t cache`
+#### 数据结构
+在`objc_class`内部有个结构体`cache_t`，里面就缓存着曾用过的方法</br>
+```c++
+// 看到这种结构就该联想到 散列表
+struct cache_t {
+    struct bucket_t *_buckets; // 散列表, [...bucket_t、bucket_t、bucket_t...]
+    mask_t _mask; // _mask = _buckets.length - 1
+    mask_t _occupied; // 已缓存的方法数量
+}
+
+struct bucket_t {
+    SEL _key;
+    IMP _imp;
+}
+```
+
+#### 存储的形式
+`散列表(哈希表)` 的方式存储，以空间换时间
+
+#### 表格大概如下
+| 索引i  | bucket_t                                   |
+|-----|----------------------------------------|
+| 0   | NULL                                   |
+| 1   | NULL                                   |
+| 2   | bucket_t(_key = @selector(test), _imp) |
+| 3   | NULL                                   |
+| 4   | NULL                                   |
+| ... | ...                                    |
+
+#### 原理
+例如: `[objc test]`
+
+##### 散列表 取值过程：
+1. 调动方法`@selector(test)`
+2. 用传入的`SEL`和`_mask`按位与`&`得到索引`i`
+3. 根据索引`i`找到`bucket_t`，判断其中的`SEL`与传入的`SEL`是否相同
+    1. 是，返回该`SEL`对应的`_iml`
+    2. 否，检查索引`i-1`，继续比较`SEL`，以此类推，如果索引<0，则使索引=_mask-1，直到找到`_imp`
+
+
+##### 散列表 存值过程：
+1. 调用方法`@selector(test)`
+2. 初始时，为对象的`cache_t`分配一定的空间，`cache_t`下的`_mask`值为`散列表`的长度 - 1
+3. 用传入的`SEL`和`_mask`按位与`&`得到索引`i`(这样得到的`i`也一定小于 <= `_mask`)
+4. 检查索引`i`对应的空间是否为`NULL`
+    1. 是，将这个`bucket_t(@selector(test), _imp`缓存在索引`i`对应的空间
+    2. 否，检查索引`i-1`对应的空间是否为`NULL`，以此类推，如果索引<0，则使索引=_mask-1，并检查对应的空间是否为`NULL`，直到找到索引空间为`NULL`的再缓存
 
 
 ### class方法，object_getClass 和 objc_getClass 三者的区别
